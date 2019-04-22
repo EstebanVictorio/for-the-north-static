@@ -8,11 +8,15 @@ html, body {
   padding: 0;
   background-color: #fdfbed;
   font-family: bFont;
+  width: 100%;
+  height: 100vh;
 }
 
 .logo {
   box-sizing: border-box;
   padding: 0 0.5em;
+  text-decoration: none;
+  color: black;
 }
 
 .nav-link {
@@ -30,6 +34,7 @@ html, body {
 }
 
 .navbar {
+  grid-area: navbar;
   height: 60px;
   background-color: #F0DB4F;
   color: #323330;
@@ -39,9 +44,28 @@ html, body {
 }
 
 .sidebar {
+  grid-area: sidebar;
   display: flex;
   flex-direction: column;
   background-color: rgb(175, 153, 6);
+}
+
+
+.main {
+  grid-area: main;
+  box-sizing: border-box;
+  padding: 20px;
+  font-weight: 600;
+  font-size: 24px;
+  overflow-y: scroll;
+}
+
+.code {
+  border-radius: 10px;
+  background-color: white;
+  color: crimson;
+  font-size: 18px;
+  padding: 5px;
 }
 
 @media screen and (min-width: 240px) {
@@ -53,6 +77,12 @@ html, body {
   .nav-link {
     width: 100%;
   }
+
+  body {
+    display: flex;
+    flex-direction: column;
+
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -60,6 +90,14 @@ html, body {
     display: inline-flex;
     height: calc(100vh - 60px);
     align-items: flex-start;
+  }
+  body {
+    display: grid;
+    grid-template-rows: minmax(min-content,max-content) 2fr;
+    grid-template-columns: minmax(min-content,max-content) 2fr;
+    grid-template-areas:
+      "navbar navbar"
+      "sidebar main";
   }
 }
 
