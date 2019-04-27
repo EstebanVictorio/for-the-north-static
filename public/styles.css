@@ -50,6 +50,9 @@ html, body {
   background-color: rgb(175, 153, 6);
 }
 
+.collapse-checkbox {
+  /* display: none; */
+}
 
 .main {
   grid-area: main;
@@ -58,6 +61,7 @@ html, body {
   font-weight: 600;
   font-size: 24px;
   overflow-y: scroll;
+  text-align: justify;
 }
 
 .post-body {
@@ -67,9 +71,16 @@ html, body {
 .code {
   border-radius: 10px;
   background-color: white;
-  color: crimson;
-  font-size: 18px;
-  padding: 5px;
+}
+
+
+
+.collapse-checkbox + .collapse {
+  height: initial;
+}
+
+.collapse-checkbox:checked + .collapse {
+  height: 28px;
 }
 
 @media screen and (min-width: 240px) {
@@ -85,7 +96,6 @@ html, body {
   body {
     display: flex;
     flex-direction: column;
-
   }
 }
 
