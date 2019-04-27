@@ -1,4 +1,4 @@
-# for-the-north
+# for-the-north-static
 A JavaScript-related blog. From me, and my experiences.
 
 

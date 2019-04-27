@@ -60,6 +60,10 @@ html, body {
   overflow-y: scroll;
 }
 
+.post-body {
+  padding: 0 120px;
+}
+
 .code {
   border-radius: 10px;
   background-color: white;
