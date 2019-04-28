@@ -12,6 +12,16 @@ html, body {
   height: 100vh;
 }
 
+.navbar {
+  grid-area: navbar;
+  height: 60px;
+  background-color: #F0DB4F;
+  color: #323330;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+}
+
 .logo {
   box-sizing: border-box;
   padding: 0 0.5em;
@@ -33,31 +43,11 @@ html, body {
   text-decoration: underline;
 }
 
-.navbar {
-  grid-area: navbar;
-  height: 60px;
-  background-color: #F0DB4F;
-  color: #323330;
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-}
-
 .sidebar {
   grid-area: sidebar;
   display: flex;
   flex-direction: column;
   background-color: rgb(175, 153, 6);
-}
-
-.code-section {
-  position:relative;
-  display: flex;
-  align-items: center;
-}
-
-.collapse-checkbox {
-  display: none;
 }
 
 .main {
@@ -75,27 +65,11 @@ html, body {
   padding: 0 120px;
 }
 
-
-@media screen and (min-width: 240px) {
-  .sidebar {
-    height: unset;
-    text-align: center;
-  }
-
-  .nav-link {
-    width: 100%;
-  }
-
-  body {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .code {
-    font-size: 10px!important;
-  }
+.code-section {
+  position:relative;
+  display: flex;
+  align-items: center;
 }
-
 
 .collapse-checkbox {
   display: none;
@@ -117,36 +91,46 @@ html, body {
   background-color: lightgray;
 }
 
+.collapse-checkbox + .collapse-toggle {
+  background-image: url('/for-the-north-static/static/images/collapse.svg');
+  top: 30px;
+}
+
+.collapse-checkbox:checked + .collapse-toggle {
+  background-image: url('/for-the-north-static/static/images/expand.svg');
+}
+
+.collapse-checkbox:checked + .collapse-toggle + .collapse-content {
+  height: 0;
+  overflow: hidden;
+}
+
 .collapse-content {
   transition: height 0.2s linear;
   height: 400px;
   width: 100%;
 }
 
-#collapse-1 + .collapse-toggle {
-  background-image: url('/for-the-north-static/static/images/collapse.svg');
-  top: 30px;
-}
 
-#collapse-1:checked + .collapse-toggle {
-  background-image: url('/for-the-north-static/static/images/expand.svg');
-}
 
-#collapse-1:checked + .collapse-toggle + .collapse-content {
-  height: 0;
-}
+@media screen and (min-width: 240px) {
+  .sidebar {
+    height: unset;
+    text-align: center;
+  }
 
-#collapse-2 + .collapse-toggle {
-  background-image: url('/for-the-north-static/static/images/collapse.svg');
-  top: 30px;
-}
+  .nav-link {
+    width: 100%;
+  }
 
-#collapse-2:checked + .collapse-toggle {
-  background-image: url('/for-the-north-static/static/images/expand.svg');
-}
+  body {
+    display: flex;
+    flex-direction: column;
+  }
 
-#collapse-2:checked + .collapse-toggle + .collapse-content {
-  height: 0;
+  .code {
+    font-size: 10px!important;
+  }
 }
 
 @media screen and (min-width: 800px) {

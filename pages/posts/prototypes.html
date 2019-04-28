@@ -28,42 +28,29 @@
       to get our ways, and implement our beloved patterns, it seems difficult
       even to use the most simple features of JavaScript along this paradigm.
     </p>
-
-    <br/>
-    <br/>
-
     <p>
       Don't worry, I understand.
     </p>
-
-    <br/>
-    <br/>
-    
     <p>
       But when dark times come, these usually bring people that have experienced
       some sort of this cloudy and shadow neighborhoods that make us tremble when
       the project manager says:
     </p>
-
     <p class="dialog">
         "Hey, we are getting some issues in the product page,
-        would you mind taking a look at it?"
+        would you mind taking a look?"
     </p>
-
     <p class="sneaky-action">
         * project manager flees and leaves you to die*
     </p>
-
     <p>
       So, let's get started for once.
     </p>
-
-    <br />
     <p>
       Prototypes pretty much work the same way as object instances in <span id="code-tag-1" class="code">Java/C#/PHP</span> do.
     </p>
     <p>
-      You add a few "methods" to have some functionality or behavior going, and you're good to go.
+      You add a few "attributes" and "methods" to have some features and functionality or behavior going, and you're good to go.
     </p>
     <p>
       Things get fuzzy when we attempt to mess with the word <span id="code-tag-2" class="code">this</span>.
@@ -71,12 +58,12 @@
     <p>
       First, to wrap our heads around this, we must run into some
       samples so we can put our terms over the table and actually
-      see what's going on:
+      see what's going on. Suppose we have the following code samples:
     </p>
     <h3>ES5</h3>
     <div class="code-section">
         <input type="checkbox" class="collapse-checkbox" id="collapse-1">
-        <label class="collapse-toggle" for="collapse-1">
+        <label class="collapse-toggle" for="collapse-1" title="Click to toggle expand/collapse">
         </label>
         <pre class="collapse-content">
         <code class="code language-javascript">
@@ -95,7 +82,7 @@
     <h3>ES6</h3>
     <div class="code-section">
         <input type="checkbox" class="collapse-checkbox" id="collapse-2">
-        <label class="collapse-toggle" for="collapse-2">
+        <label class="collapse-toggle" for="collapse-2" title="Click to toggle expand/collapse">
         </label>
         <pre class="collapse-content">
         <code class="code language-javascript">
@@ -114,6 +101,18 @@
         </code>
       </pre>
     </div>
+
+    <p>
+      A pretty normal code if you ask me.
+      Nothing wrong with it. You can get out even
+      by just calling <code>johnSmith.sayHi()</code>
+      and you're good to go. Both samples are just fine.
+    </p>
+    <p>
+      Now, let's get further.
+      What would happen if we wanted to create a special
+      prototype to handle a few click events from a page?
+    </p>
     
   </main>
   <script src="/for-the-north-static/public/javascript/prism.js"></script>
