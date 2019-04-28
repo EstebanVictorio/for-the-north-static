@@ -3,7 +3,11 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For the north</title>
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+  <link rel="stylesheet" href="/for-the-north-static/public/prism.css">
   <link rel="stylesheet" href="/for-the-north-static/public/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
   <nav class="navbar">
@@ -16,7 +20,9 @@
     <a class="nav-link" href="/for-the-north-static/pages/about.html">About</a>
   </aside>
   <main class="main post-body">
-    <h2 class="post-headline"> Prototypes, feared by many, dominated by a few.</h2>
+    <h2 class="post-headline">
+      Prototypes, feared by many, dominated by a few.
+    </h2>
     <p>
       Even with all the hype that many of us OOP programmers out there trying
       to get our ways, and implement our beloved patterns, it seems difficult
@@ -60,27 +66,56 @@
       You add a few "methods" to have some functionality or behavior going, and you're good to go.
     </p>
     <p>
-      Things get fuzzy when we attempt to mess with the word <span id="code-tag-2" class="code">this</code>.
+      Things get fuzzy when we attempt to mess with the word <span id="code-tag-2" class="code">this</span>.
     </p>
     <p>
       First, to wrap our heads around this, we must run into some
       samples so we can put our terms over the table and actually
       see what's going on:
-        <input type="checkbox" id="prototype-sample-1" class="collapse-checkbox"/>
-        <label class="collapse" for="prototype-sample-1">
-        <h3>ES5</h3>
-        <div id="es5-code-prototypes-1" class="code">
-          asd
-        </div>
-        </label>
-        <h3>ES6</h3>
-        <div id="es6-code-prototypes-1" class="code">
-          
-        </div>
     </p>
+    <h3>ES5</h3>
+    <div class="code-section">
+        <input type="checkbox" class="collapse-checkbox" id="collapse-1">
+        <label class="collapse-toggle" for="collapse-1">
+        </label>
+        <pre class="collapse-content">
+        <code class="code language-javascript">
+          function Person(name){
+            this.name = name
+            this.sayHi = function() {
+              console.log("Hi! I'm " + this.name)
+            }
+          }
+  
+          var johnSmith = new Person()
+          johnSmith.sayHi()
+        </code>
+      </pre>
+    </div>
+    <h3>ES6</h3>
+    <div class="code-section">
+        <input type="checkbox" class="collapse-checkbox" id="collapse-2">
+        <label class="collapse-toggle" for="collapse-2">
+        </label>
+        <pre class="collapse-content">
+        <code class="code language-javascript">
+          class Person {
+            constructor(name) {
+              this.name = name
+            }
+
+            sayHi() {
+              console.log(`Hi! I'm ${this.name}`)
+            }
+          }
+
+          const johnSmith = new Person()
+            johnSmith.sayHi()
+        </code>
+      </pre>
+    </div>
+    
   </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
-  <script src="/for-the-north-static/static/posts/prototypes/samples.js"></script>
-  <script src="/for-the-north-static/public/javascript/posts/prototypes.js"></script>
+  <script src="/for-the-north-static/public/javascript/prism.js"></script>
 </body>
 </html>

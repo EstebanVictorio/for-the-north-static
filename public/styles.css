@@ -50,8 +50,14 @@ html, body {
   background-color: rgb(175, 153, 6);
 }
 
+.code-section {
+  position:relative;
+  display: flex;
+  align-items: center;
+}
+
 .collapse-checkbox {
-  /* display: none; */
+  display: none;
 }
 
 .main {
@@ -62,26 +68,13 @@ html, body {
   font-size: 24px;
   overflow-y: scroll;
   text-align: justify;
+  font-family: Lato;
 }
 
 .post-body {
   padding: 0 120px;
 }
 
-.code {
-  border-radius: 10px;
-  background-color: white;
-}
-
-
-
-.collapse-checkbox + .collapse {
-  height: initial;
-}
-
-.collapse-checkbox:checked + .collapse {
-  height: 28px;
-}
 
 @media screen and (min-width: 240px) {
   .sidebar {
@@ -96,6 +89,69 @@ html, body {
   body {
     display: flex;
     flex-direction: column;
+  }
+
+  .code {
+    font-size: 10px!important;
+  }
+}
+
+
+.collapse-checkbox {
+  display: none;
+}
+
+.collapse-toggle {
+  display: block;
+  position: absolute;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: whitesmoke;
+  border-radius: 50%;
+}
+
+.collapse-toggle:hover {
+  background-color: lightgray;
+}
+
+.collapse-content {
+  transition: height 0.2s linear;
+  height: 400px;
+  width: 100%;
+}
+
+#collapse-1 + .collapse-toggle {
+  background-image: url('/for-the-north-static/static/images/collapse.svg');
+  top: 30px;
+}
+
+#collapse-1:checked + .collapse-toggle {
+  background-image: url('/for-the-north-static/static/images/expand.svg');
+}
+
+#collapse-1:checked + .collapse-toggle + .collapse-content {
+  height: 0;
+}
+
+#collapse-2 + .collapse-toggle {
+  background-image: url('/for-the-north-static/static/images/collapse.svg');
+  top: 30px;
+}
+
+#collapse-2:checked + .collapse-toggle {
+  background-image: url('/for-the-north-static/static/images/expand.svg');
+}
+
+#collapse-2:checked + .collapse-toggle + .collapse-content {
+  height: 0;
+}
+
+@media screen and (min-width: 800px) {
+  .code {
+    font-size: 16px!important;
   }
 }
 
