@@ -105,6 +105,10 @@ html, body {
   overflow: hidden;
 }
 
+.collapse-checkbox:checked + .collapse-toggle + .collapse-content > .code{
+  display: none;
+}
+
 .collapse-content {
   transition: height 0.2s linear;
   height: 400px;
@@ -154,4 +158,3 @@ html, body {
       "sidebar main";
   }
 }
-

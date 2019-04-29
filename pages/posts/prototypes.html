@@ -97,7 +97,7 @@
           }
 
           const johnSmith = new Person()
-            johnSmith.sayHi()
+          johnSmith.sayHi()
         </code>
       </pre>
     </div>
@@ -112,8 +112,71 @@
       Now, let's get further.
       What would happen if we wanted to create a special
       prototype to handle a few click events from a page?
+      Let's take a look:
     </p>
-    
+    <p>
+      <div class="code-section">
+            <input type="checkbox" class="collapse-checkbox" id="collapse-4">
+            <label class="collapse-toggle" for="collapse-4" title="Click to toggle expand/collapse">
+            </label>
+            <pre class="collapse-content">
+            <code class="code language-javascript">
+              // JavaScript: index.js
+              class ClickListener {
+                constructor(button) {
+                  this.button = button
+                  this.counter = 0
+                  this.button.addEventListener('click', this.handleClick)
+                }
+
+                handleClick() {
+                  this.counter++
+                  const counterHolder = document.querySelector('#counter')
+                  counterHolder.innerHTML = `You clicked ${this.counter} times`
+                }
+              }
+
+              const button = document.querySelector('#count-button')
+              const listener = new ClickListener(button)
+            </code>
+
+            <code class="code language-html">
+              &lt;!--HTML: index.html --&gt;
+                  &lt;html&gt;
+                    &lt;head&gt;&lt;/head&gt;
+                    &lt;body&gt;
+                      &lt;div&gt;
+                        &lt;input type="button" id="count-button"&gt;
+                        &lt;div id="counter" &gt;
+                          You clicked 0 times
+                        &lt;/div&gt;
+                      &lt;/div&gt;
+                    &lt;script src="./index.js"&gt;&lt;/script&gt;
+                    &lt;/body&gt;
+                  &lt;/html&gt;
+
+              </code>
+          </pre>
+      </div>
+    </p>
+    <p>
+      I want you to try this code.
+      Visit a site like <a href="https://codesandbox.io">Code Sandbox</a>
+      or <a href="https://codepen.io">CodePen</a>.
+      The result of that code will be the same. Both sites will
+      show, according to that script, that you clicked the button
+      by "NaN" times.
+    </p>
+
+    <p>
+      Why is this behavior going? Are we doing things wrong?
+      Do we need to relearn the OOP concepts again? None of the
+      2 latest questions.
+    </p>
+
+    <p>
+
+    </p>
   </main>
   <script src="/for-the-north-static/public/javascript/prism.js"></script>
 </body>
