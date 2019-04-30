@@ -173,10 +173,184 @@
       Do we need to relearn the OOP concepts again? None of the
       2 latest questions.
     </p>
-
     <p>
-
+      What we are facing here is the behavior of JavaScript itself.
+      It's something we might not be aware of. It's something that,
+      for the purposes stated here, we'll refer to as the "Context".
+      Context is not like the scope. Context is something that comes
+      to life once we are executing code. 
     </p>
+    <p>
+      The Context is the underlying reference from where the current
+      bound function will work with. 
+      In a simpler way, it is the reference to which the word <code>this</code>
+      will point to, during execution.
+    </p>
+    <p>
+      In other words, this means that you will truly and absolutely know
+      what <code>this</code> is only during runtime (of course, this is if
+      you are good as debugger).
+    </p>
+    <p>
+      <strong>BUT!</strong>
+      There's a way for you to know what the <code>this</code> context will
+      be. Although, I must say, this is error prone, with the right attitude,
+      and a good knowledge of the right tools, you'll be safe from cutting
+      yourself (too much) in the process. The cornerstones for <code>this</code>
+      are composed of two parts: the rules and exceptions of the <code>this</code>
+      context.
+    </p>
+    <h3>
+      Rules
+    </h3>
+    <p>
+      There are 4 rules that reign over the <code>this</code>
+      kingdom, each with its own name:
+      <ol>
+        <li>
+          <h4>Default binding</h4>
+          <p>
+            This context binding is the one that fallbacks to the <code>global</code>
+            object, or, in other words, mostly everything that lies in the global
+            scope.
+          </p>
+          <p>
+            Let's say we have the following code:
+            <div class="code-section">
+                <input type="checkbox" class="collapse-checkbox" id="collapse-5">
+                <label class="collapse-toggle" for="collapse-5" title="Click to toggle expand/collapse">
+                </label>
+                <pre class="collapse-content">
+                <code class="code language-javascript">
+                  let name = "Steve"
+                  function printMyName() {
+                    console.log(this.name)
+                  }
+
+                  printMyName()
+                </code>
+              </pre>
+            </div>
+
+            Try this out. This will result with the string "Steve" in the console.
+            The engine will look up for the closest context object to have the property
+            <code>name</code>.
+
+            <p>
+              This rule also applies by depth:
+              <div class="code-section">
+                  <input type="checkbox" class="collapse-checkbox" id="collapse-5">
+                  <label class="collapse-toggle" for="collapse-5" title="Click to toggle expand/collapse">
+                  </label>
+                  <pre class="collapse-content">
+                  <code class="code language-javascript">
+                    let name = "Steve"
+                    function printName() {
+                      function printGlobalName() {
+                        console.log(this.name)
+                      }
+                      printGlobalName()
+                    }
+  
+                    printName()
+                  </code>
+                </pre>
+              </div>
+            </p>
+          </p>
+        </li>
+        <li>
+          <h4>Implicit binding</h4>
+          <p>
+            This context binding is applied depending from where a particular function
+            was called, including if this was called by an eligible context object. 
+            You can call this the <code>call-site</code>. 
+          </p>
+          <p>Given the following code:</p>
+          <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-5">
+              <label class="collapse-toggle" for="collapse-5" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                  let cardKey = 'guest'
+                  let clientCardKey = 'AKJboq38h48fhIB'
+                  function open(door) {
+                    if(door) {
+                    if(this.cardKey) { // There's a catch here...
+                      console.log(`Card key: ${this.cardKey}`)
+                    if(door.id === 0) {
+                      if(this.cardKey === 'guest') {
+                        console.log('Access authorized')
+                      }else {
+                        console.log('Access denied')
+                      }
+                    }
+                   else if(door.id === 1) {
+                      if(this.cardKey === 'AKJboq38h48fhIB') {
+                        console.log('Access authorized')
+                      }else{
+                        console.log('Access denied')
+                      }
+                    } else if(this.cardKey === 'master'){
+                        console.log('Access authorized')
+                    } else {
+                        console.log('Access denied')
+                    }
+                  } else {
+                    console.log('Access denied')
+                  }
+                }
+                  }
+
+                  let guest = {
+                    name: 'Tom',
+                    position: 'Guest',
+                    open,
+                  }
+
+                  let client = {
+                    name: 'Jerry',
+                    cardKey: clientCardKey,
+                    position: 'Client',
+                    open,
+                  }
+
+                  let janitor = {
+                    name: 'Hank',
+                    position: 'Janitor',
+                    cardKey: 'master',
+                    open,
+                  }
+
+                  let doors = 
+                    {
+                      guest: {
+                        id: 0,
+                        requiredCardKey: 'guest'
+                      },
+                      client:{
+                        id: 1,
+                        requiredCardKey: 'AKJboq38h48fhIB'
+                      },
+                      master:{
+                        id: 2,
+                        requiredCardKey: 'master'
+                      }
+                    }
+
+                    client.open(doors.client)
+                    janitor.open(doors.master)
+                    guest.open(doors.guest) // Suspicious...
+
+              </code>
+            </pre>
+          </div>
+        </li>
+      </ol>
+    
+    </p>
+
   </main>
   <script src="/for-the-north-static/public/javascript/prism.js"></script>
 </body>
