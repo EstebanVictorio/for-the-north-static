@@ -239,8 +239,8 @@
             <p>
               This rule also applies by depth:
               <div class="code-section">
-                  <input type="checkbox" class="collapse-checkbox" id="collapse-5">
-                  <label class="collapse-toggle" for="collapse-5" title="Click to toggle expand/collapse">
+                  <input type="checkbox" class="collapse-checkbox" id="collapse-6">
+                  <label class="collapse-toggle" for="collapse-6" title="Click to toggle expand/collapse">
                   </label>
                   <pre class="collapse-content">
                   <code class="code language-javascript">
@@ -268,40 +268,34 @@
           </p>
           <p>Given the following code:</p>
           <div class="code-section">
-              <input type="checkbox" class="collapse-checkbox" id="collapse-5">
-              <label class="collapse-toggle" for="collapse-5" title="Click to toggle expand/collapse">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-7">
+              <label class="collapse-toggle" for="collapse-7" title="Click to toggle expand/collapse">
               </label>
               <pre class="collapse-content">
               <code class="code language-javascript">
+                const GUEST = 0
+                const CLIENT = 1
+                const MASTER = 2
+                function open(door) {
+                  let opened = false
+                  if(this.cardKey){
+                    switch(door.id) {
+                      case GUEST:
+                        opened = this.cardKey === 'guest'
+                          break
+                        case CLIENT:
+                          opened = this.cardKey === 'AKJboq38h48fhIB'
+                          break
+                        case MASTER:
+                          opened = this.cardKey === 'master'
+                          break
+                      }
+                    }
+                    console.log(`Access ${opened ? 'Authorized' : 'denied'}`)
+                    return opened
+                  }
                   let cardKey = 'guest'
                   let clientCardKey = 'AKJboq38h48fhIB'
-                  function open(door) {
-                    if(door) {
-                    if(this.cardKey) { // There's a catch here...
-                      console.log(`Card key: ${this.cardKey}`)
-                    if(door.id === 0) {
-                      if(this.cardKey === 'guest') {
-                        console.log('Access authorized')
-                      }else {
-                        console.log('Access denied')
-                      }
-                    }
-                   else if(door.id === 1) {
-                      if(this.cardKey === 'AKJboq38h48fhIB') {
-                        console.log('Access authorized')
-                      }else{
-                        console.log('Access denied')
-                      }
-                    } else if(this.cardKey === 'master'){
-                        console.log('Access authorized')
-                    } else {
-                        console.log('Access denied')
-                    }
-                  } else {
-                    console.log('Access denied')
-                  }
-                }
-                  }
 
                   let guest = {
                     name: 'Tom',
@@ -339,16 +333,67 @@
                       }
                     }
 
-                    client.open(doors.client)
-                    janitor.open(doors.master)
-                    guest.open(doors.guest) // Suspicious...
-
+                  client.open(doors.client)
+                  janitor.open(doors.master)
+                  guest.open(doors.guest) // Suspicious...
               </code>
             </pre>
           </div>
         </li>
+        <li>
+          <h4>
+            Explicit Binding
+          </h4>
+          <p>
+            This type of binding is the one that lets you, through a range of selected functions, apply a context object
+            explicitly, allowing you to work the way you intend. Let's take the following example:
+            <div class="code-section">
+                <input type="checkbox" class="collapse-checkbox" id="collapse-8">
+                <label class="collapse-toggle" for="collapse-8" title="Click to toggle expand/collapse">
+                </label>
+                <pre class="collapse-content">
+                <code class="code language-javascript">
+                  class Employee {
+                    constructor(name, employeeCode) {
+                      this.name = name
+                      this.employeeCode = employeeCode
+                    }
+
+                    getEmployeeCode(){
+                      return this.employeeCode
+                    }
+                  }
+
+
+                  class Printer {
+                    print() {
+                      console.log(`${this.name}'s Code: ${this.employeeCode}`)
+                    }
+                  }
+
+                  const printer = new Printer()
+                  const john = new Employee('John', '129dgKi3')
+                  const jack = new Employee('Jack', '1p209udc')
+
+                  // Using 'apply'
+                  printer.print.apply(john)
+                  printer.print.apply(jack)
+
+                  // And the same can be achieved with 'call'
+                  printer.print.call(john)
+                  printer.print.call(jack)
+                </code>
+              </pre>
+            </div>
+            <code>call</code> and <code>apply</code> let you define a context object or your choice and use it
+            as the <code>this</code> of the function you are using. The difference between these functions is that,
+            <code>call</code> will receive, as its first argument, the context object, followed by each of the original
+            function's arguments, resembling its signature, while <code>apply</code> will receive, the context object as
+            its first argument, and the second argument will be an array, resembling each of the original function's arguments,
+            respectively, so, be careful on the second one.
+          </p>
+        </li>   
       </ol>
-    
     </p>
 
   </main>

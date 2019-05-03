@@ -10,5 +10,5 @@ server.use('/for-the-north-static/pages',express.static('pages'))
 
 
 server.listen(3000, function () {
-  console.log('> Started server on port 3000...')
+  console.log('> I love you 3000...')
 }) 
