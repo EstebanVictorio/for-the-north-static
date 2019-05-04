@@ -393,6 +393,117 @@
             respectively, so, be careful on the second one.
           </p>
         </li>
+        <li>
+          <h4>
+            <code>new</code> Binding (Prototype creation)
+            <p>
+              This type of context binding is one of the most familiar for the OOP programmer, and perhaps,
+              the most dangerous of them all. Don't let it fool you, it only pleases the eyes, and becomes
+              like a candy for the developer. The more you do it without care, the more you harm yourself.
+              From experience, I can tell you, it's not like OOP.
+
+              This particular binding, instead of adopting and mimicking our beloved OOP concepts
+              and behaviors, follows the "context is bound at execution" nature, and should be used
+              with deliberate care. This is like taking the training wheels off your bike.
+
+              Now, if you got this far, and feel ready for it (because we don't ever know when we are until we use 
+              or do something new - haha, pun intended), let's check the following code:
+              <div class="code-section">
+                <input type="checkbox" class="collapse-checkbox" id="collapse-9">
+                <label class="collapse-toggle" for="collapse-9" title="Click to toggle expand/collapse">
+                </label>
+                <pre class="collapse-content">
+                <code class="code language-javascript">
+                  function Car() {
+                    this.carName = 'Mustang'
+                    this.carColor = 'Metalic Silver/Black'
+                  }
+
+                  Car()
+
+                  // Will this work? 
+                  console.log(carName)
+                </code>
+              </pre>
+            </div>
+            Here we are, declaring a function that sets the properties <code>name</code>
+            and <code>color</code> to the context object, but we haven't referred to any...
+            So... which context object are we working with then? In the sample above, we
+            refer to <code>name</code> in the <code>console.log()</code> call as a global
+            variable, then we must be able to see it from there. You may say: "That's ... not very
+            helpful though, if you ask me...". Yes, maybe we'll be able to tweak this sample a bit
+            to make it a little more reusable:
+            <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-9">
+              <label class="collapse-toggle" for="collapse-9" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                function Car(carName, carColor) {
+                  this.carName = carName
+                  this.carColor = carColor
+                }
+
+                Car('Ferrari', 'Red')
+
+                
+                console.log(carName)
+                console.log(carColor)
+              </code>
+            </pre>
+          </div>
+            Now we're talking. We have a function that can change some property values!
+            But hey... this isn't very helpful, you may say, and you also may point out
+            that we could've just declared two global variables and use them instead, so,
+            what gives? Well, this is where our <code>new</code> operator comes in.
+
+            Take a look at this:
+            <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-9">
+              <label class="collapse-toggle" for="collapse-9" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                function Car(carName, carColor) {
+                  this.carName = carName
+                  this.carColor = carColor
+                }
+
+                const ferrari = new Car('Ferrari', 'Red')
+
+                console.log(carName) // ReferenceError
+                console.log(carColor) // ReferenceError
+              </code>
+            </pre>
+          </div>
+          Whoa! Witchcraft here! Actually, no. Our <code>new</code> operator did
+          all the trick. What this lil' buddy here does is that, out of nothing (like magic, but no),
+          creates a new context object from where to work with, and if assigned, allocates its reference,
+          giving you the power to work from there, so, everything related to the values you assigned to that
+          context object, will be available and accesible from there. You can say that it brings some sort of isolation,
+          but you can still do some tricks to fool your "object", since there are no access modifiers as there are in other
+          programming languages. This type of context binding is related with prototypes, and serves the purpose
+          of the post here. Now you might wonder... why use them? Well, besides using them as structures for many tasks
+          or problems you might have, let's use an example to ilustrate why they may be useful. 
+          </p>
+          <p>
+          Let's say that you work as a software developer in a franchise of reknowned cinema, and you are the one in charge
+          of receiving ticket orders. After a user at a web page pays the ticket, a request is sent, and stored somewhere.
+          Your job is to create a final JSON-format structure that resembles the purchase of a ticket, and send it to wherever
+          place that it will be stored. So, your tasks would be:
+          <ol>
+            <li>Create a validator for the data</li>
+            <li>Create a JSON Generator</li>
+            <li>Create a data forward mechanism</li>
+          </ol>
+
+          So, you might as well do it with functions, but that would imply that I have availability of functions
+          meandering around there with very specific tasks, which would not be reusable for any other things, so,
+          you might as well isolate these behaviors in definite structures, just like you would do in OOP, but, now
+          that you know the very basics, you can do it here in JavaScript too!
+          </p>
+          </h4>
+        </li>
       </ol>
     </p>
 
