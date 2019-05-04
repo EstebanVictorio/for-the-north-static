@@ -396,6 +396,7 @@
         <li>
           <h4>
             <code>new</code> Binding (Prototype creation)
+          </h4>
             <p>
               This type of context binding is one of the most familiar for the OOP programmer, and perhaps,
               the most dangerous of them all. Don't let it fool you, it only pleases the eyes, and becomes
@@ -459,8 +460,8 @@
 
             Take a look at this:
             <div class="code-section">
-              <input type="checkbox" class="collapse-checkbox" id="collapse-9">
-              <label class="collapse-toggle" for="collapse-9" title="Click to toggle expand/collapse">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-10">
+              <label class="collapse-toggle" for="collapse-10" title="Click to toggle expand/collapse">
               </label>
               <pre class="collapse-content">
               <code class="code language-javascript">
@@ -488,9 +489,9 @@
           </p>
           <p>
           Let's say that you work as a software developer in a franchise of reknowned cinema, and you are the one in charge
-          of receiving ticket orders. After a user at a web page pays the ticket, a request is sent, and stored somewhere.
-          Your job is to create a final JSON-format structure that resembles the purchase of a ticket, and send it to wherever
-          place that it will be stored. So, your tasks would be:
+          of receiving ticket orders. After a user at a web page attempts to pay the ticket, a request is sent and you need to
+          create and verify the information for the payment. Your job is to create a final JSON-format structure that resembles
+          the purchase of a ticket, and send it to a server, where the payment will be processed. So, your tasks would be:
           <ol>
             <li>Create a validator for the data</li>
             <li>Create a JSON Generator</li>
@@ -501,8 +502,37 @@
           meandering around there with very specific tasks, which would not be reusable for any other things, so,
           you might as well isolate these behaviors in definite structures, just like you would do in OOP, but, now
           that you know the very basics, you can do it here in JavaScript too!
+          So, to begin with the task at hand, first we need to know the information we are going to receive.
+          For the sake of this example, let's assume we receive the following:
+          <div class="code-section">
+            <input type="checkbox" class="collapse-checkbox" id="collapse-11">
+            <label class="collapse-toggle" for="collapse-11" title="Click to toggle expand/collapse">
+            </label>
+            <pre class="collapse-content">
+            <code class="code language-javascript">
+              {
+                "customerName" : "Jack Hollins",
+                "cardNumber" : "XXXX-XXXX-XXXX-XXXX", // Stop wondering why would someone do this. It's not right.
+                "cardCompany" : "VISA", // In any case, you would use some encrypted info anyways.
+                "cardCode" : "", // Ok, you win, we can refer to encryption in another post.
+                "cardExpiration": "10/99" // And JWT too, why not? 
+              }
+            </code>
+          </pre>
+        </div>
+        Of course, we receive this info, but not on this format. We receive it directly from
+        the fields on the site. To generate the format above, first we need to validate it:
+        <div class="code-section">
+          <input type="checkbox" class="collapse-checkbox" id="collapse-12">
+          <label class="collapse-toggle" for="collapse-12" title="Click to toggle expand/collapse">
+          </label>
+          <pre class="collapse-content">
+          <code class="code language-javascript">
+
+          </code>
+        </pre>
+      </div>
           </p>
-          </h4>
         </li>
       </ol>
     </p>
