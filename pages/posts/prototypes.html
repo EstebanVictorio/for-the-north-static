@@ -521,14 +521,54 @@
           </pre>
         </div>
         Of course, we receive this info, but not on this format. We receive it directly from
-        the fields on the site. To generate the format above, first we need to validate it:
+        the fields on the site. To generate the format above, first we need to validate it.
+        So, before we begin with prototype creation, remember: Prototypes are prototypes, no matter
+        what, whether you use the in the ES6 <code>class</code> form or the regular function form.
+        For the sake of this example, we'll use the ES6 form:
         <div class="code-section">
           <input type="checkbox" class="collapse-checkbox" id="collapse-12">
           <label class="collapse-toggle" for="collapse-12" title="Click to toggle expand/collapse">
           </label>
           <pre class="collapse-content">
           <code class="code language-javascript">
+            class PaymentInfoValidator {
+              constructor(customerName, cardNumber, cardCompany, cardCode, cardExpiration) {
+                this.customerName = customerName
+                this.cardNumber = cardNumber
+                this.cardCompany = cardCompany
+                this.cardCode = cardCode
+                this.cardExpiration = cardExpiration
+              }
 
+              // To validate entire info
+              isValidInfo() {
+                return (
+                  this.isValidCardNumber() &&
+                  this.isValidCardCompany() &&
+                  this.isValirdCardCode() &&
+                  this.isValidCardExpiration()
+                )
+              }
+
+              isValidCardNumber() {
+                return /(([0-9]{4})\-){3}[0-9]{4}/.test(this.cardNumber)
+              }
+
+              isValidCardCompany() {
+                return (
+                  this.cardCompany === 'VISA' ||
+                  this.cardCompany === 'MASTERCARD'
+                )
+              }
+
+              isValidCardCode() {
+                return this.cardCode.length === 3
+              }
+
+              isValidCardExpiration() {
+                
+              }
+            }
           </code>
         </pre>
       </div>
