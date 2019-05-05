@@ -67,10 +67,10 @@
         </label>
         <pre class="collapse-content">
         <code class="code language-javascript">
-          function Person(name){
-            this.name = name
+          function Person(personName){
+            this.personName = personName
             this.sayHi = function() {
-              console.log("Hi! I'm " + this.name)
+              console.log("Hi! I'm " + this.personName)
             }
           }
   
@@ -87,16 +87,16 @@
         <pre class="collapse-content">
         <code class="code language-javascript">
           class Person {
-            constructor(name) {
-              this.name = name
+            constructor(personName) {
+              this.personName = personName
             }
 
             sayHi() {
-              console.log(`Hi! I'm ${this.name}`)
+              console.log(`Hi! I'm ${this.personName}`)
             }
           }
 
-          const johnSmith = new Person()
+          const johnSmith = new Person('John Smith')
           johnSmith.sayHi()
         </code>
       </pre>
@@ -222,9 +222,9 @@
                 </label>
                 <pre class="collapse-content">
                 <code class="code language-javascript">
-                  let name = "Steve"
+                  let personName = "Steve"
                   function printMyName() {
-                    console.log(this.name)
+                    console.log(this.personName)
                   }
 
                   printMyName()
@@ -244,10 +244,10 @@
                   </label>
                   <pre class="collapse-content">
                   <code class="code language-javascript">
-                    let name = "Steve"
+                    let personName = "Steve"
                     function printName() {
                       function printGlobalName() {
-                        console.log(this.name)
+                        console.log(this.personName)
                       }
                       printGlobalName()
                     }
@@ -354,8 +354,8 @@
                 <pre class="collapse-content">
                 <code class="code language-javascript">
                   class Employee {
-                    constructor(name, employeeCode) {
-                      this.name = name
+                    constructor(employeeName, employeeCode) {
+                      this.employeeName = employeeName
                       this.employeeCode = employeeCode
                     }
 
@@ -367,7 +367,7 @@
 
                   class Printer {
                     print() {
-                      console.log(`${this.name}'s Code: ${this.employeeCode}`)
+                      console.log(`${this.employeeName}'s Code: ${this.employeeCode}`)
                     }
                   }
 
