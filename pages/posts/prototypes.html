@@ -799,8 +799,22 @@
         the possibilities. As James Clear states in his book "Atomic Habits" (not the exact quote):
         "It's not about saying - I have to. It's all about saying - Today, I have
         the chance to change my life for better." We can practice the possibilities a lot
-        by ourselves. Now this well said, we jump into exceptions.
+        by ourselves. Now this well said, we jump into exceptions. For now, let's dive into
+        the different exceptions we might have:
       </p>
+      <ul>
+        <li>
+          <h4>
+            Ignored binding
+          </h4>
+          <p>
+            One way for this to happen is trying to hard bind to an undefined/null context.
+            If you try to use <code>call</code> or <code>apply</code> with any of those values,
+            the context will fallback to the global object, and from there, the same rules apply.
+            If in <code>strict</code> mode, it will be <code>undefined</code>.
+          </p>
+        </li>
+      </ul>
     </p>
 
   </main>
