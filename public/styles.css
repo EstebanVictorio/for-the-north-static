@@ -53,9 +53,7 @@ html, body {
 .main {
   grid-area: main;
   box-sizing: border-box;
-  padding: 20px;
   font-weight: 600;
-  font-size: 24px;
   overflow-y: scroll;
   text-align: justify;
   font-family: Lato;
@@ -93,7 +91,6 @@ html, body {
 
 .collapse-checkbox + .collapse-toggle {
   background-image: url('/for-the-north-static/static/images/collapse.svg');
-  top: 30px;
 }
 
 .collapse-checkbox:checked + .collapse-toggle {
@@ -118,9 +115,22 @@ html, body {
 
 
 @media screen and (min-width: 240px) {
+  .list {
+    padding: 0 20px;
+  }
+
   .sidebar {
     height: unset;
     text-align: center;
+  }
+
+  .collapse-toggle {
+    top: 19px;
+  }
+
+  .main {
+    padding: 10px;
+    font-size: 16px;
   }
 
   .nav-link {
@@ -157,8 +167,17 @@ html, body {
       "navbar navbar"
       "sidebar main";
   }
-}
 
-.list {
-  padding: 0 10px;
+  .collapse-toggle {
+    top: 30px;
+  }
+
+  .main {
+    padding: 20px;
+    font-size: 24px;
+  }
+
+  .list {
+    padding: 0 10px;
+  }
 }

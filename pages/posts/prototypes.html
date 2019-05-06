@@ -74,7 +74,7 @@
             }
           }
   
-          var johnSmith = new Person()
+          var johnSmith = new Person('John Smith')
           johnSmith.sayHi()
         </code>
       </pre>
@@ -206,7 +206,7 @@
     <p>
       There are 4 rules that reign over the <code>this</code>
       kingdom, each with its own name:
-      <ol class="list">
+      <ul class="list">
         <li>
           <h4>Default binding</h4>
           <p>
@@ -222,7 +222,7 @@
                 </label>
                 <pre class="collapse-content">
                 <code class="code language-javascript">
-                  let personName = "Steve"
+                  var personName = "Steve"
                   function printMyName() {
                     console.log(this.personName)
                   }
@@ -244,7 +244,7 @@
                   </label>
                   <pre class="collapse-content">
                   <code class="code language-javascript">
-                    let personName = "Steve"
+                    var personName = "Steve"
                     function printName() {
                       function printGlobalName() {
                         console.log(this.personName)
@@ -494,7 +494,7 @@
           the purchase of a ticket, and send it to a server, where the payment will be processed. So, your tasks would be:
           <ol>
             <li>Create a validator for the data</li>
-            <li>Create a JSON Generator</li>
+            <li>Create a JSON Format Plotter</li>
             <li>Create a data forward mechanism</li>
           </ol>
 
@@ -545,7 +545,7 @@
                 return (
                   this.isValidCardNumber() &&
                   this.isValidCardCompany() &&
-                  this.isValirdCardCode() &&
+                  this.isValidCardCode() &&
                   this.isValidCardExpiration()
                 )
               }
@@ -562,19 +562,244 @@
               }
 
               isValidCardCode() {
-                return this.cardCode.length === 3
+                return /[0-9]{3}/.test(this.cardCode)
               }
 
               isValidCardExpiration() {
-                
+                return /(([0][1-9])|([1][0-2]))[/]([1-9]{2})/.test(this.cardExpiration)
               }
             }
           </code>
         </pre>
       </div>
+      As the means for the validation, we'll just check the format. <code>isValidInfo</code>
+      will use the remaining validation functions to check each of the fields sent to our
+      prototype. <code>isValidCardNumber</code> will check the format of the card number, via
+      our first regular expression. For it to be valid, it needs to have 4 sequences of 4 digits,
+      separated by a hyphen (-). For the card company, we've included 2 possible companies: Visa and
+      Mastercard. After that, we just validate that the card code has 3 digits. And finally, we check
+      card expiration from the date this post was written and onwards until 2099. So, we've got how to
+      validate our information. Now we can pass directly to our plotter:
+      <div class="code-section">
+        <input type="checkbox" class="collapse-checkbox" id="collapse-12">
+        <label class="collapse-toggle" for="collapse-12" title="Click to toggle expand/collapse">
+        </label>
+        <pre class="collapse-content">
+        <code class="code language-javascript">
+          class PaymentInfoJSONPlotter {
+            constructor(customerName, cardNumber, cardCompany, cardCode, cardExpiration) {
+              this.customerName = customerName
+              this.cardNumber = cardNumber
+              this.cardCompany = cardCompany
+              this.cardCode = cardCode
+              this.cardExpiration = cardExpiration
+            }
+
+            getJSON() {
+              return {
+                customerName : this.customerName,
+                cardNumber : this.cardNumber,
+                cardCompany : this.cardCompany,
+                cardExpiration: this.cardExpiration,
+              }
+            }
+          }
+        </code>
+      </pre>
+    </div>
+    Now we got our plotter, although, this sample seems pretty straightforward and orthodox from
+    OOP patterns, there's a minor detail I'd like to remark here. Even though we use <code>new</code>
+    as our object construction of a prototype, there's a simpler way to do this. If we know that objects
+    can be taken as context objects, we can use a trick to bind a context to our new object from our
+    <code>PaymentInfoValidator</code> object. Constructor calls in JavaScript are not distinct from
+    a normal function call, and do not operate the same way as in OOP languages. Constructor calls
+    are just functions with the <code>new</code> operator in front of them, and, create a new object
+    from where to work with as the context of the new prototype object. This can be changed, as, in
+    constructor calls, it is allowed to return an object as the context, therefore, allowing to work
+    from there. So we can rewrite our sample. Imagine we get and validate our info as the following
+    from the DOM:
+    <div class="code-section">
+        <input type="checkbox" class="collapse-checkbox" id="collapse-12">
+        <label class="collapse-toggle" for="collapse-12" title="Click to toggle expand/collapse">
+        </label>
+        <pre class="collapse-content">
+        <code class="code language-javascript">
+            var customerName = 'Jack Hollins'
+            var cardNumber = '1111-1111-1111-1111'
+            var cardCompany = 'VISA'
+            var cardCode = '123'
+            var cardExpiration = '10/99'
+  
+            let info = {
+              customerName,
+              cardNumber,
+              cardCompany,
+              cardCode,
+              cardExpiration,
+            }
+  
+            class PaymentInfoValidator {
+              constructor() {
+                return {
+                  ...info,
+                  isValidInfo: this.isValidInfo,
+                  isValidCardNumber: this.isValidCardNumber,
+                  isValidCardCompany: this.isValidCardCompany,
+                  isValidCardCode: this.isValidCardCode,
+                  isValidCardExpiration: this.isValidCardExpiration,
+                }
+              }
+  
+              // To validate entire info
+              isValidInfo() {
+                return (
+                  this.isValidCardNumber() &&
+                  this.isValidCardCompany() &&
+                  this.isValidCardCode() &&
+                  this.isValidCardExpiration()
+                )
+              }
+  
+              isValidCardNumber() {
+                return /(([0-9]{4})\-){3}[0-9]{4}/.test(this.cardNumber)
+              }
+  
+              isValidCardCompany() {
+                return (
+                  this.cardCompany === 'VISA' ||
+                  this.cardCompany === 'MASTERCARD'
+                )
+              }
+  
+              isValidCardCode() {
+                return /[0-9]{3}/.test(this.cardCode)
+              }
+  
+              isValidCardExpiration() {
+                return /(([0][1-9])|([1][0-2]))[/]([1-9]{2})/.test(this.cardExpiration)
+              }
+            }
+        </code>
+      </pre>
+    </div>
+        Well, we now don't need to pass all info to our constructor call. However, 
+        it can be even simpler. How far can we go? As far as not needing prototypes:
+        <div class="code-section">
+            <input type="checkbox" class="collapse-checkbox" id="collapse-12">
+            <label class="collapse-toggle" for="collapse-12" title="Click to toggle expand/collapse">
+            </label>
+            <pre class="collapse-content">
+            <code class="code language-javascript">
+                var customerName = 'Jack Hollins'
+                var cardNumber = '1111-1111-1111-1111'
+                var cardCompany = 'VISA'
+                var cardCode = '123'
+                var cardExpiration = '10/99'
+      
+                let info = {
+                  isValidCardNumber: () => /(([0-9]{4})\-){3}[0-9]{4}/.test(this.cardNumber),
+                  isValidCardCompany: () => this.cardCompany === 'VISA' || this.cardCompany === 'MASTERCARD',
+                  isValidCardCode: () => /[0-9]{3}/.test(this.cardCode),
+                  isValidCardExpiration: () => /(([0][1-9])|([1][0-2]))[/]([1-9]{2})/.test(this.cardExpiration),
+                }
+            </code>
+          </pre>
+        </div>
+          Although simpler and we lost our <code>isValidInfo</code> function, we have those variables as globals, hence, not quite practical, so,
+          let's go back to our prototype approach, but, in more practical terms:
+          <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-12">
+              <label class="collapse-toggle" for="collapse-12" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                // Mocking the values:
+                  let paymentInfo = {
+                    customerName : 'Jack Hollins',
+                    cardNumber : '1111-1111-1111-1111',
+                    cardCompany : 'VISA',
+                    cardCode : '123',
+                    cardExpiration : '10/99',
+                  }
+        
+                  class PaymentInfoValidator {
+                    constructor(paymentInfo) {
+                      // As we are writing in the ES6 standard, we take advantage of it,
+                      // using destructuring assignment :
+                      const { 
+                        customerName,
+                        cardNumber,
+                        cardCompany,
+                        cardCode,
+                        cardExpiration 
+                      } = paymentInfo
+                      this.customerName = customerName
+                      this.cardNumber = cardNumber
+                      this.cardCompany = cardCompany
+                      this.cardCode = cardCode
+                      this.cardExpiration = cardExpiration
+                    }
+        
+                    // To validate entire info
+                    isValidInfo() {
+                      return (
+                        this.isValidCardNumber() &&
+                        this.isValidCardCompany() &&
+                        this.isValidCardCode() &&
+                        this.isValidCardExpiration()
+                      )
+                    }
+        
+                    isValidCardNumber() {
+                      return /(([0-9]{4})\-){3}[0-9]{4}/.test(this.cardNumber)
+                    }
+        
+                    isValidCardCompany() {
+                      return (
+                        this.cardCompany === 'VISA' ||
+                        this.cardCompany === 'MASTERCARD'
+                      )
+                    }
+        
+                    isValidCardCode() {
+                      return /[0-9]{3}/.test(this.cardCode)
+                    }
+        
+                    isValidCardExpiration() {
+                      return /(([0][1-9])|([1][0-2]))[/]([1-9]{2})/.test(this.cardExpiration)
+                    }
+                  }
+                  
+                  // Our final declaration and initialization of our object using our PaymentInfoValidator prototype
+                  const paymentInfoValidator = new PaymentInfoValidator(paymentInfo)
+                  paymentInfoValidator.isValidInfo() // true
+              </code>
+            </pre>
+          </div>
+          As stated in the code sample above, we use a combination of prototypes with another feature
+          of ES6 standard: destructuring assignment, which lets me "take out" the properties of an
+          object as if they were variables with the names of the properties themselves. Think of this
+          as sending an array of values that you would like your new object to have (and you can do this too
+          in JavaScript), but, in a more straightforward way, since you have at least a minimal guide as to
+          where your prototype properties should point. Unlike an array, this is a way where you know what
+          to pick from an incoming object in your constructor call, instead of memorizing where the correct
+          values are located in a given array via positions (what a way to give yourself extra-work).
           </p>
         </li>
-      </ol>
+      </ul>
+      <h3>
+        Exceptions
+      </h3>
+      <p>
+        Whoa... That was long, so many samples that we could lose ourselves enjoying
+        the possibilities. As James Clear states in his book "Atomic Habits" (not the exact quote):
+        "It's not about saying - I have to. It's all about saying - Today, I have
+        the chance to change my life for better." We can practice the possibilities a lot
+        by ourselves. Now this well said, we jump into exceptions to rules.
+      </p>
+      <ul>
+        
+      </ul>
     </p>
 
   </main>
