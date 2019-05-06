@@ -60,7 +60,7 @@ html, body {
 }
 
 .post-body {
-  padding: 0 120px;
+  padding: 0 10px;
 }
 
 .code-section {
@@ -114,9 +114,9 @@ html, body {
 
 
 
-@media screen and (min-width: 240px) {
+@media screen and (min-width: 144px) {
   .list {
-    padding: 0 20px;
+    padding: 0 5px;
   }
 
   .sidebar {
@@ -129,7 +129,6 @@ html, body {
   }
 
   .main {
-    padding: 10px;
     font-size: 16px;
   }
 
@@ -179,5 +178,6 @@ html, body {
 
   .list {
     padding: 0 10px;
+    box-sizing: border-box;
   }
 }
