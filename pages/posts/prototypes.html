@@ -811,7 +811,24 @@
             One way for this to happen is trying to hard bind to an undefined/null context.
             If you try to use <code>call</code> or <code>apply</code> with any of those values,
             the context will fallback to the global object, and from there, the same rules apply.
-            If in <code>strict</code> mode, it will be <code>undefined</code>.
+            If in <code>strict</code> mode, it will be <code>undefined</code>:
+            <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-15">
+              <label class="collapse-toggle" for="collapse-15" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                  var personName = 'John'
+
+                  function sayHi() {
+                    console.log(`Hi, I'm ${this.personName}`)
+                  }
+
+                  sayHi.apply(null)
+                  sayHi.call(undefined, sayHi)
+              </code>
+            </pre>
+          </div>
           </p>
         </li>
       </ul>
