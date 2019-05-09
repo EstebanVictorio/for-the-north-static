@@ -824,12 +824,60 @@
                     console.log(`Hi, I'm ${this.personName}`)
                   }
 
-                  sayHi.apply(null)
-                  sayHi.call(undefined, sayHi)
+                  sayHi.apply(null)  // Hi, I'm John
+                  sayHi.call(undefined, sayHi) // Hi, I'm John
+
+                  // using strict mode
+
+                  "use strict"
+
+                  var personName = 'John'
+
+                  function sayHi() {
+	                  console.log(`Hi, my name is ${this.personName}`)
+                  }
+
+                  sayHi() // Error
               </code>
             </pre>
           </div>
           </p>
+        </li>
+        <li>
+          <h4>
+            Indirection
+          </h4>
+          <p>
+            The easiest way to show this is using an IIFE (<a href="https://developer.mozilla.org/en-US/docs/Glossary/IIFE">Immediately Invoked Function Expression</a>):
+            <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-15">
+              <label class="collapse-toggle" for="collapse-15" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                var balance = 0
+                function bankGreeting() {
+                  console.log(`Hi customer, your balance is: $ ${this.balance}`)
+                }
+
+                var premiumCustomerAccount = {
+                  balance: 100,
+                  bankGreeting: bankGreeting,
+                }
+
+                var normalCustomerAccount = {
+                  balance: 5,
+                }; // This semicolon is to prevent execution of a code before the IIFE. Otherwise, you'll get an error.
+
+                (normalCustomerAccount.bankGreeting = premiumCustomerAccount.bankGreeting)() // Hi customer, your balance is: $ 0
+              </code>
+            </pre>
+          </div>
+          The assignment of the function results in the function itself, we just have a reference to it,
+          allowing you to invoke it immediately as a result of the assignment.
+          </p>
+          The call site of the is the global scope. This means that the context object will fallback to the global object. Therefore,
+          will lead to the variable <code>balance</code> holding the value 0.
         </li>
       </ul>
     </p>
