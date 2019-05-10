@@ -879,6 +879,43 @@
           The call site of the is the global scope. This means that the context object will fallback to the global object. Therefore,
           will lead to the variable <code>balance</code> holding the value 0.
         </li>
+        <li>
+          <h4>Soft Bind</h4>
+          <p>
+            This is a way of binding that, allows you to fall back to a default object if the one you indicate is not a valid context object or
+            you use your functions with different context objects in different situations, but you cling on to one as the default one.
+            This is more of an added functionality. I'll take the sample from the book I learned prototypes. It goes like this:
+            <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-15">
+              <label class="collapse-toggle" for="collapse-15" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                  if (!Function.prototype.softBind) { // Check if a soft binding already exists
+                    Function.prototype.softBind = function(obj) { // Else, we declare a new one
+                      var fn = this, // We declare multiple variables from which we'll work with, fn being the function,
+                        curried = [].slice.call( arguments, 1 ), // curried being the arguments
+                        bound = function bound() { // and bound being the function with the context object applied
+                          return fn.apply(
+                            (!this ||
+                              (typeof window !== "undefined" &&
+                                this === window) ||
+                              (typeof global !== "undefined" &&
+                                this === global) // We ask if we have a 'this' already defined and if 'window' or 'global' (In case you're working in NodeJS)
+                            ) ? obj : this, // are the same as 'this' or if this doesn't exist. If this is so, we apply the object as the context.
+                            curried.concat.apply( curried, arguments ) // Otherwhise, we apply 'this' as the context object, followed by applying all of
+                            // the current arguments to the returned function.
+                          );
+                        };
+                      bound.prototype = Object.create( fn.prototype ); // We set the new prototype from the new function
+                      return bound; // Return our new function, soft bound to a default fall back context object.
+                    };
+                  }
+              </code>
+            </pre>
+          </div>
+          </p>
+        </li>
       </ul>
     </p>
 
