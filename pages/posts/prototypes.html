@@ -893,7 +893,7 @@
               </label>
               <pre class="collapse-content">
               <code class="code language-javascript">
-                  if (!Function.prototype.softBind) { // Check if a soft binding already exists
+                  if (!Function.prototype.softBind) { // Check if a soft binding already exists in the Function prototype
                     Function.prototype.softBind = function(obj) { // Else, we declare a new one
                       var fn = this, // We declare multiple variables from which we'll work with, fn being the function,
                         curried = [].slice.call( arguments, 1 ), // curried being the arguments
@@ -916,11 +916,252 @@
               </code>
             </pre>
           </div>
+          An example where we can use this snippet is, if we are configuring some sort of
+          default settings, and use a set of special ones for specific tasks, like languages:
+          <div class="code-section">
+            <input type="checkbox" class="collapse-checkbox" id="collapse-15">
+            <label class="collapse-toggle" for="collapse-15" title="Click to toggle expand/collapse">
+            </label>
+            <pre class="collapse-content">
+            <code class="code language-javascript">
+                if (!Function.prototype.softBind) { // Check if a soft binding already exists in the Function prototype
+                  Function.prototype.softBind = function(obj) { // Else, we declare a new one
+                    var fn = this, // We declare multiple variables from which we'll work with, fn being the function,
+                      curried = [].slice.call( arguments, 1 ), // curried being the arguments
+                      bound = function bound() { // and bound being the function with the context object applied
+                        return fn.apply(
+                          (!this ||
+                            (typeof window !== "undefined" &&
+                              this === window) ||
+                            (typeof global !== "undefined" &&
+                              this === global) // We ask if we have a 'this' already defined and if 'window' or 'global' (In case you're working in NodeJS)
+                          ) ? obj : this, // are the same as 'this' or if this doesn't exist. If this is so, we apply the object as the context.
+                          curried.concat.apply( curried, arguments ) // Otherwhise, we apply 'this' as the context object, followed by applying all of
+                          // the current arguments to the returned function.
+                        );
+                      };
+                    bound.prototype = Object.create( fn.prototype ); // We set the new prototype from the new function
+                    return bound; // Return our new function, soft bound to a default fall back context object.
+                  };
+                }
+              
+                function testLanguage(arg) {
+                  var text = '';
+                  if(this.lang === 'es' && this.country === 'MX') {
+                    text = "La configuración del lenguaje es: Español"
+                    text = text + " y sus parametros fueron: [" + arg + "]"
+                  }else if(this.lang === 'en' && this.country === 'US') {
+                    text= "Language settings are now in: English"
+                    text= text + " and your arguments where: [" + arg + "]"
+                  }
+                  console.log(text)
+                }
+
+                var defaultLangSettings = {
+                  country: 'US',
+                  lang: 'en',
+                  langName: 'English'
+                }
+      
+                var spanishLangSettings = {
+                  country: 'MX',
+                  lang: 'es',
+                  langName: 'Español'
+                }
+
+                var translationObj = {
+                  ...defaultLangSettings
+                }
+
+                var spanishTranslationObj = {
+                  ...spanishLangSettings
+                }
+                
+                var englishTest = testLanguage.softBind(defaultLangSettings)
+                englishTest() // Language settings are now in: English and your arguments where: [undefined] - no arguments
+
+                
+                spanishTranslationObj.test = testLanguage.softBind(defaultLangSettings)
+                
+                spanishTranslationObj.test() // La configuración del lenguaje es: Español y sus parametros fueron: [undefined] -  - no arguments
+
+                function setFallbackSettings(callback){
+                  callback()
+                }
+
+                setFallbackSettings(spanishTranslationObj.test)  // Language settings are now in: English and your arguments where: [undefined] - no arguments
+            </code>
+          </pre>
+        </div>
+        This is a way of somehow knowing beforehand which is the context object if we were
+        to use some kind of configuration or predefined values if we were to fail our expectations
+        in the code we are running. This sample will fallback to the English language settings if
+        not called from the <code>spanishTranslationObj</code>, or in other words, if this function
+        has a call-site completely different from its origin.
           </p>
         </li>
-      </ul>
-    </p>
+        <li>
+          <h4>
+            Lexical <code>this</code>
+          </h4>
+          <p>
+          This type of binding is introduced in the new ES6 standard, which brings many helpful
+          tools to develop and ease our work. One of them is the arrow function, described by the
+          following syntax: <code>() => {}</code>, where the parentheses would the where you put your
+          desired arguments like this: <code>(arg1, arg2....) => {}</code>, followed by the body of the
+          function like this: <code>(arg1,arg2.... ) => { console.log('Hello world!'); } </code>.
+          Of course you can enter new lines in the body, you don't have to write the body on the same line.
+          Now, remember the event handler example at the beginning?:
+          <div class="code-section">
+              <input type="checkbox" class="collapse-checkbox" id="collapse-3">
+              <label class="collapse-toggle" for="collapse-3" title="Click to toggle expand/collapse">
+              </label>
+              <pre class="collapse-content">
+              <code class="code language-javascript">
+                // JavaScript: index.js
+                class ClickListener {
+                  constructor(button) {
+                    this.button = button
+                    this.counter = 0
+                    this.button.addEventListener('click', this.handleClick)
+                  }
+  
+                  handleClick() {
+                    this.counter++
+                    const counterHolder = document.querySelector('#counter')
+                    counterHolder.innerHTML = `You clicked ${this.counter} times`
+                  }
+                }
+  
+                const button = document.querySelector('#count-button')
+                const listener = new ClickListener(button)
+              </code>
+  
+              <code class="code language-html">
+                &lt;!--HTML: index.html --&gt;
+                    &lt;html&gt;
+                      &lt;head&gt;&lt;/head&gt;
+                      &lt;body&gt;
+                        &lt;div&gt;
+                          &lt;input type="button" id="count-button"&gt;
+                          &lt;div id="counter" &gt;
+                            You clicked 0 times
+                          &lt;/div&gt;
+                        &lt;/div&gt;
+                      &lt;script src="./index.js"&gt;&lt;/script&gt;
+                      &lt;/body&gt;
+                    &lt;/html&gt;
+                </code>
+            </pre>
+        </div>
+        If you attempted to work with this one, by the time you read this, probably you already know it doesn't work.
+        This is because, the <code>addEventListener</code> uses the context object from where it is, so our <code>this</code>
+        is different from where it's used from the one we expect from the <code>class</code> prototype.
+      </p>
+      <p>
+        There are 2 ways to solve it. The first one, would be to bind our <code>handleClick</code> function from the prototype:
+        <div class="code-section">
+            <input type="checkbox" class="collapse-checkbox" id="collapse-3">
+            <label class="collapse-toggle" for="collapse-3" title="Click to toggle expand/collapse">
+            </label>
+            <pre class="collapse-content">
+            <code class="code language-javascript">
+              // JavaScript: index.js
+              class ClickListener {
+                constructor(button) {
+                  this.button = button;
+                  this.counter = 0;
+                  this.handleClick = this.handleClick.bind(this) // Hard bound to the prototype
+                  this.button.addEventListener("click", this.handleClick);
+                }
+              
+                handleClick() {
+                  this.counter++;
+                  const counterHolder = document.querySelector("#counter");
+                  counterHolder.innerHTML = `You clicked ${this.counter} times`;
+                }
+              }
+              
+              const button = document.querySelector("#count-button");
+              const listener = new ClickListener(button);
+            </code>
 
+            <code class="code language-html">
+              &lt;!--HTML: index.html --&gt;
+                  &lt;html&gt;
+                    &lt;head&gt;&lt;/head&gt;
+                    &lt;body&gt;
+                      &lt;div&gt;
+                        &lt;input type="button" id="count-button"&gt;
+                        &lt;div id="counter" &gt;
+                          You clicked 0 times
+                        &lt;/div&gt;
+                      &lt;/div&gt;
+                    &lt;script src="./index.js"&gt;&lt;/script&gt;
+                    &lt;/body&gt;
+                  &lt;/html&gt;
+              </code>
+          </pre>
+      </div>
+      Or, we can use our new function syntax, the arrow function:
+      <div class="code-section">
+          <input type="checkbox" class="collapse-checkbox" id="collapse-3">
+          <label class="collapse-toggle" for="collapse-3" title="Click to toggle expand/collapse">
+          </label>
+          <pre class="collapse-content">
+          <code class="code language-javascript">
+              class ClickListener {
+                constructor(button) {
+                  this.button = button;
+                  this.counter = 0;
+                  this.handleClick = () => { // Whoa! no need to bind to a context?
+                    this.counter++;
+                    const counterHolder = document.querySelector("#counter");
+                    counterHolder.innerHTML = `You clicked ${this.counter} times`;
+                  };
+                  this.button.addEventListener("click", this.handleClick);
+                }
+
+                // Where did our definition of handleClick go?
+              }
+              
+              const button = document.querySelector("#count-button");
+              const listener = new ClickListener(button);
+          </code>
+
+          <code class="code language-html">
+            &lt;!--HTML: index.html --&gt;
+                &lt;html&gt;
+                  &lt;head&gt;&lt;/head&gt;
+                  &lt;body&gt;
+                    &lt;div&gt;
+                      &lt;input type="button" id="count-button"&gt;
+                      &lt;div id="counter" &gt;
+                        You clicked 0 times
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  &lt;script src="./index.js"&gt;&lt;/script&gt;
+                  &lt;/body&gt;
+                &lt;/html&gt;
+            </code>
+        </pre>
+    </div>
+    We removed our previous definition of <code>handleClick</code>, and lifted
+    it up to the constructor, and used the new arrow function syntax.
+    Arrow functions automatically bind to the enclosing context they are in,
+    so, our context object would be the one created by the prototype
+    <code>ClickListener</code>, without the need to bind the function.
+    Although you would have to write the function in the constructor, this
+    sample is relatively small and you can go with it. For a bigger function,
+    you might like to hard bind the function beforehand, but this always up to
+    your needs and requirements.
+    </p>
+        </li>
+      </ul>
+      So... that's it! That's pretty much what you need to now to work with
+      prototypes. The mnore you know and experiment about <code>this</code>,
+      the more proficient and confident you will be with it.
+    </p>
   </main>
   <script src="/for-the-north-static/public/javascript/prism.js"></script>
 </body>
